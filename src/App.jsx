@@ -1,8 +1,8 @@
 import "./App.css";
-import { Dashboard } from "./components/pages/Dashboard";
-import { Signup } from "./components/pages/Signup";
-import { Login } from "./components/pages/Login";
 import { Routes, Route } from "react-router-dom";
+import { Login } from "./pages/Login";
+import { Signup } from "./pages/Signup";
+import { Dashboard } from "./pages/Dashboard";
 
 // import Button from "react-bootstrap/Button"; //maybe 3kb
 // import { Button } from "react-bootstrap"; //maybe 300kb

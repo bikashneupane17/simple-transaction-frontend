@@ -1,10 +1,38 @@
-import React from "react";
-import { TopNav } from "../TopNav";
-import { Footer } from "../Footer";
-import { CustomInput } from "../CustomInput";
+import React, { useState } from "react";
+import { TopNav } from "../components/TopNav";
+import { Footer } from "../components/Footer";
+import { CustomInput } from "../components/CustomInput";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { postLogin } from "../axios/axiosHelper";
+import { useNavigate } from "react-router-dom";
+
+const initialState = {
+  email: "",
+  password: "",
+};
 
 export const Login = () => {
+  const [form, setForm] = useState(initialState);
+
+  const navigate = useNavigate();
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  };
+
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+
+    const result = await postLogin(form);
+
+    result.status !== "success"
+      ? window.alert(result.message) && setForm(initialState)
+      : navigate("/dashboard");
+
+    return;
+  };
+
   const inputs = [
     {
       label: "Email",
@@ -24,13 +52,13 @@ export const Login = () => {
   return (
     <div>
       <TopNav />
-      <Container className="main" fluid>
-        <Row>
+      <Container fluid>
+        <Row className="main">
           <Col
             md={6}
             className="bg-primary vh-md-100 d-flex justify-content-center align-items-center"
           >
-            <div className="shadow-lg rounded p-3">
+            <div className="shadow-lg rounded p-3 text-white">
               <h1>Welcome Back</h1>
               <p>Login to your account and take controll of your finance</p>
             </div>
@@ -43,13 +71,15 @@ export const Login = () => {
             <div className="shadow-lg rounded border p-5 w-75">
               <h2>Login</h2>
               <hr />
-              <Form>
+              <Form onSubmit={handleOnSubmit}>
                 {inputs.map((item, i) => (
-                  <CustomInput key={i} {...item} />
+                  <CustomInput key={i} {...item} onChange={handleOnChange} />
                 ))}
 
                 <div className="d-grid">
-                  <Button className="btn-primary">Login</Button>
+                  <Button className="btn-primary" type="submit">
+                    Login
+                  </Button>
                 </div>
               </Form>
 

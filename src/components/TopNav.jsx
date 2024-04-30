@@ -4,7 +4,7 @@ import Navbar from "react-bootstrap/Navbar";
 
 export const TopNav = () => {
   return (
-    <Navbar expand="md" className="bg-info">
+    <Navbar expand="md" className="bg-info shadow-lg  ">
       <Container>
         <Navbar.Brand href="#home">Simple-Transaction</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
