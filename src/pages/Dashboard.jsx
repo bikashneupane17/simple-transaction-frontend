@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 
 export const Dashboard = ({ loggedInUser }) => {
   const [transactions, setTransactions] = useState([]);
+  const [originalTransaction, setOriginalTransaction] = useState([]);
 
   useEffect(() => {
     getTrans();
@@ -17,7 +18,23 @@ export const Dashboard = ({ loggedInUser }) => {
 
   const getTrans = async () => {
     const { status, message, trans } = await getTransaction();
-    status === "error" ? toast.error(message) : setTransactions(trans);
+    if (status === "error") {
+      toast.error(message);
+    } else {
+      setOriginalTransaction(trans);
+      setTransactions(trans);
+    }
+  };
+
+  const handleOnClick = (mth) => {
+    mth === "All"
+      ? setTransactions(originalTransaction)
+      : setTransactions(
+          originalTransaction.filter((trans) => {
+            const [year, month, date] = trans.date.split("-");
+            return month === "0" + mth;
+          })
+        );
   };
 
   return (
@@ -33,7 +50,10 @@ export const Dashboard = ({ loggedInUser }) => {
 
           <Row className="mt-5">
             <Col>
-              <TransactionTable transactions={transactions} />
+              <TransactionTable
+                transactions={transactions}
+                handleOnClick={handleOnClick}
+              />
             </Col>
           </Row>
         </Container>

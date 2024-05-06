@@ -1,13 +1,53 @@
-import React from "react";
-import { Table } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button, Table, Row, Col } from "react-bootstrap";
 
-export const TransactionTable = ({ transactions }) => {
+export const TransactionTable = ({ transactions, handleOnClick }) => {
   const total = transactions.reduce((acc, curr) => {
     return curr.type === "income" ? acc + curr.amount : acc - curr.amount;
   }, 0);
+
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "July",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
   return (
     <>
+      <Row>
+        <Col
+          className="border rounded shadow-lg"
+          onClick={() => handleOnClick("All")}
+        >
+          All
+        </Col>
+      </Row>
+
+      <Row className="mb-3">
+        {months.map((mth, index) => {
+          return (
+            <Col
+              key={index}
+              onClick={() => handleOnClick(index + 1)}
+              className="border rounded shadow-lg"
+            >
+              {mth}
+            </Col>
+          );
+        })}
+      </Row>
+
       <div>{transactions.length} Transactions found!</div>
+
       {transactions.length > 0 && (
         <Table striped bordered hover variant="info shadow-lg">
           <thead>
