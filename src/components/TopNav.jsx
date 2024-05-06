@@ -2,7 +2,11 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
-export const TopNav = () => {
+export const TopNav = ({ loggedInUser }) => {
+  const handleOnLoggedOut = () => {
+    localStorage.removeItem("user");
+  };
+
   return (
     <Navbar expand="md" className="bg-info shadow-lg  ">
       <Container>
@@ -10,8 +14,16 @@ export const TopNav = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link href="/">Login</Nav.Link>
-            <Nav.Link href="/signup">Signup</Nav.Link>
+            {loggedInUser?._id ? (
+              <Nav.Link href="/" onClick={handleOnLoggedOut}>
+                Sign Out {loggedInUser?.name}?
+              </Nav.Link>
+            ) : (
+              <>
+                <Nav.Link href="/">Login</Nav.Link>
+                <Nav.Link href="/signup">Signup</Nav.Link>
+              </>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

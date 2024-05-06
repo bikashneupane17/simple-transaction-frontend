@@ -4,8 +4,13 @@ const rootAPI = import.meta.env.VITE_APP_API;
 const apiSignupEndPoint = rootAPI + "/users/signup";
 const apiLoginEndPoint = rootAPI + "/users/login";
 
-// const apiSignupEndPoint = "http://localhost:8000/api/v1/users/signup";
-// const apiLoginEndPoint = "http://localhost:8000/api/v1/users/login";
+const apiNewTransaction = rootAPI + "/transaction";
+
+const getUserId = () => {
+  const userStr = localStorage.getItem("user");
+  const userObj = userStr ? JSON.parse(userStr) : null;
+  return userObj?._id ?? null;
+};
 
 export const postSignup = async (userObj) => {
   try {
@@ -21,10 +26,56 @@ export const postSignup = async (userObj) => {
   }
 };
 
-export const postLogin = async (userObj) => {
+export const postLogin = async (loginInfo) => {
   try {
-    const { data } = await axios.post(apiLoginEndPoint, userObj);
+    const { data } = await axios.post(apiLoginEndPoint, loginInfo);
     console.log(data);
+
+    return data;
+  } catch (error) {
+    return {
+      status: "error",
+      message: error.message,
+    };
+  }
+};
+
+export const postTransaction = async (transactionObj) => {
+  try {
+    const userId = getUserId();
+
+    if (!userId) {
+      throw new Error("User id doen't exist! Login first");
+    }
+
+    const { data } = await axios.post(apiNewTransaction, transactionObj, {
+      headers: {
+        Authorization: userId,
+      },
+    });
+
+    return data;
+  } catch (error) {
+    return {
+      status: "error",
+      message: error.message,
+    };
+  }
+};
+
+export const getTransaction = async () => {
+  try {
+    const userId = getUserId();
+
+    if (!userId) {
+      throw new Error("User id doen't exist! Login first");
+    }
+
+    const { data } = await axios.get(apiNewTransaction, {
+      headers: {
+        Authorization: userId,
+      },
+    });
 
     return data;
   } catch (error) {

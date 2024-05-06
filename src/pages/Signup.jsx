@@ -4,7 +4,6 @@ import { Footer } from "../components/Footer";
 import { CustomInput } from "../components/CustomInput";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { postSignup } from "../axios/axiosHelper";
-import { useNavigate } from "react-router-dom";
 
 const initialState = {
   name: "",
@@ -17,8 +16,6 @@ const initialState = {
 export const Signup = () => {
   const [form, setForm] = useState(initialState);
   const [response, setResponse] = useState({});
-
-  const navigate = useNavigate();
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -36,10 +33,6 @@ export const Signup = () => {
     const result = await postSignup(rest);
     setResponse(result);
     setForm(initialState);
-
-    // return result.status !== "success"
-    //   ? window.alert(result.message)
-    //   : navigate("/");
   };
 
   const inputs = [

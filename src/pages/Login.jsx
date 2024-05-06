@@ -1,19 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TopNav } from "../components/TopNav";
 import { Footer } from "../components/Footer";
 import { CustomInput } from "../components/CustomInput";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { postLogin } from "../axios/axiosHelper";
 import { useNavigate } from "react-router-dom";
 
-const initialState = {
-  email: "",
-  password: "",
-};
+export const Login = ({ setLoggedInUser, loggedInUser }) => {
+  const [form, setForm] = useState({});
+  const [response, setResponse] = useState({});
 
-export const Login = () => {
-  const [form, setForm] = useState(initialState);
-
+  useEffect(() => {
+    loggedInUser?._id && navigate("/dashboard");
+  }, []);
   const navigate = useNavigate();
 
   const handleOnChange = (e) => {
@@ -25,12 +24,16 @@ export const Login = () => {
     e.preventDefault();
 
     const result = await postLogin(form);
+    setResponse({ status: result?.status, message: result?.message });
 
-    result.status !== "success"
-      ? window.alert(result.message) && setForm(initialState)
-      : navigate("/dashboard");
+    if (result?.status === "success") {
+      setLoggedInUser(result.user);
 
-    return;
+      localStorage.setItem("user", JSON.stringify(result.user));
+
+      navigate("/dashboard");
+      console.log(result.user);
+    }
   };
 
   const inputs = [
@@ -52,11 +55,12 @@ export const Login = () => {
   return (
     <div>
       <TopNav />
+
       <Container fluid>
         <Row className="main">
           <Col
             md={6}
-            className="bg-primary vh-md-100 d-flex justify-content-center align-items-center"
+            className="bg-primary d-flex justify-content-center align-items-center"
           >
             <div className="shadow-lg rounded p-3 text-white">
               <h1>Welcome Back</h1>
@@ -71,6 +75,15 @@ export const Login = () => {
             <div className="shadow-lg rounded border p-5 w-75">
               <h2>Login</h2>
               <hr />
+
+              {response?.message && (
+                <Alert
+                  variant={response.status === "success" ? "success" : "danger"}
+                >
+                  {response.message}
+                </Alert>
+              )}
+
               <Form onSubmit={handleOnSubmit}>
                 {inputs.map((item, i) => (
                   <CustomInput key={i} {...item} onChange={handleOnChange} />
@@ -90,9 +103,7 @@ export const Login = () => {
           </Col>
         </Row>
       </Container>
-      {/* header */}
-      {/* main  */}
-      {/* footer */}
+
       <Footer />
     </div>
   );
