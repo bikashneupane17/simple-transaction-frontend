@@ -6,7 +6,7 @@ import { postTransaction } from "../axios/axiosHelper";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export const NewTransactioForm = ({ getTrans }) => {
+export const NewTransactioForm = ({ getTrans, setShowForm }) => {
   const [form, setForm] = useState({});
 
   const inputs = [
@@ -57,13 +57,25 @@ export const NewTransactioForm = ({ getTrans }) => {
     // console.log(result.trans);
 
     toast[status](message);
-    status === "success" && getTrans();
+    status === "success" && (getTrans(), setShowForm(false));
   };
 
   return (
     <Form className="p-3 border rounded shadow-lg" onSubmit={handleOnSubmit}>
       <Row>
-        {inputs.map(({ elemType, ...item }, i) => (
+        <Col>
+          {inputs.map(({ elemType, ...item }, i) =>
+            elemType === "select" ? (
+              <CustomSelect key={i} {...item} onChange={handleOnChange} />
+            ) : (
+              <CustomInput key={i} {...item} onChange={handleOnChange} />
+            )
+          )}
+          <Button variant="primary w-100" type="submit">
+            Add Transaction
+          </Button>
+        </Col>
+        {/* {inputs.map(({ elemType, ...item }, i) => (
           <Col md={2} key={i}>
             {elemType === "select" ? (
               <CustomSelect {...item} onChange={handleOnChange} />
@@ -71,12 +83,12 @@ export const NewTransactioForm = ({ getTrans }) => {
               <CustomInput {...item} onChange={handleOnChange} />
             )}
           </Col>
-        ))}
-        <Col className="mb-3">
+        ))} */}
+        {/* <Col className="mb-3">
           <Button variant="primary w-100" type="submit">
             Add Transaction
           </Button>
-        </Col>
+        </Col> */}
       </Row>
     </Form>
   );

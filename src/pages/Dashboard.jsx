@@ -7,10 +7,13 @@ import { NewTransactioForm } from "../components/NewTransactioForm";
 import { TransactionTable } from "../components/TransactionTable";
 import { getTransaction } from "../axios/axiosHelper";
 import { toast } from "react-toastify";
+import { CustomModal } from "../components/CustomModal";
 
 export const Dashboard = ({ loggedInUser }) => {
   const [transactions, setTransactions] = useState([]);
   const [originalTransaction, setOriginalTransaction] = useState([]);
+
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     getTrans();
@@ -18,12 +21,9 @@ export const Dashboard = ({ loggedInUser }) => {
 
   const getTrans = async () => {
     const { status, message, trans } = await getTransaction();
-    if (status === "error") {
-      toast.error(message);
-    } else {
-      setOriginalTransaction(trans);
-      setTransactions(trans);
-    }
+    status === "error"
+      ? toast.error(message)
+      : (setOriginalTransaction(trans), setTransactions(trans));
   };
 
   const handleOnClick = (mth) => {
@@ -46,7 +46,19 @@ export const Dashboard = ({ loggedInUser }) => {
           <h4>Dashboard | Welcome Back {loggedInUser?.name}</h4>
           <hr />
 
-          <NewTransactioForm getTrans={getTrans} />
+          <CustomModal
+            title="Add New Transaction"
+            show={showForm}
+            setShowForm={setShowForm}
+          >
+            <NewTransactioForm getTrans={getTrans} setShowForm={setShowForm} />
+          </CustomModal>
+
+          <Row>
+            <Col className="text-end">
+              <Button onClick={() => setShowForm(true)}>Add Transaction</Button>
+            </Col>
+          </Row>
 
           <Row className="mt-5">
             <Col>
