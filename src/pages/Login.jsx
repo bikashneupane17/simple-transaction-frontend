@@ -11,8 +11,10 @@ export const Login = ({ setLoggedInUser, loggedInUser }) => {
   const [response, setResponse] = useState({});
 
   useEffect(() => {
+    console.log(loggedInUser);
     loggedInUser?._id && navigate("/dashboard");
   }, []);
+
   const navigate = useNavigate();
 
   const handleOnChange = (e) => {
