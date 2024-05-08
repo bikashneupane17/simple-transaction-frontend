@@ -5,8 +5,11 @@ import { useState } from "react";
 import { postTransaction } from "../axios/axiosHelper";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useUser } from "../Context/UserContext";
 
-export const NewTransactioForm = ({ getTrans, setShowForm }) => {
+export const NewTransactioForm = () => {
+  const { getTrans, setShowForm } = useUser();
+
   const [form, setForm] = useState({});
 
   const inputs = [
@@ -54,7 +57,6 @@ export const NewTransactioForm = ({ getTrans, setShowForm }) => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     const { status, message } = await postTransaction(form);
-    // console.log(result.trans);
 
     toast[status](message);
     status === "success" && (getTrans(), setShowForm(false));
@@ -71,24 +73,10 @@ export const NewTransactioForm = ({ getTrans, setShowForm }) => {
               <CustomInput key={i} {...item} onChange={handleOnChange} />
             )
           )}
-          <Button variant="primary w-100" type="submit">
+          <Button variant="primary" type="submit">
             Add Transaction
           </Button>
         </Col>
-        {/* {inputs.map(({ elemType, ...item }, i) => (
-          <Col md={2} key={i}>
-            {elemType === "select" ? (
-              <CustomSelect {...item} onChange={handleOnChange} />
-            ) : (
-              <CustomInput {...item} onChange={handleOnChange} />
-            )}
-          </Col>
-        ))} */}
-        {/* <Col className="mb-3">
-          <Button variant="primary w-100" type="submit">
-            Add Transaction
-          </Button>
-        </Col> */}
       </Row>
     </Form>
   );

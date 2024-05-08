@@ -5,17 +5,19 @@ import { CustomInput } from "../components/CustomInput";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { postLogin } from "../axios/axiosHelper";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../Context/UserContext";
 
-export const Login = ({ setLoggedInUser, loggedInUser }) => {
+export const Login = () => {
+  const { loggedInUser, setLoggedInUser } = useUser();
+
   const [form, setForm] = useState({});
   const [response, setResponse] = useState({});
 
-  useEffect(() => {
-    console.log(loggedInUser);
-    loggedInUser?._id && navigate("/dashboard");
-  }, []);
-
   const navigate = useNavigate();
+
+  useEffect(() => {
+    loggedInUser?._id && navigate("/dashboard");
+  }, [loggedInUser]);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -34,7 +36,6 @@ export const Login = ({ setLoggedInUser, loggedInUser }) => {
       localStorage.setItem("user", JSON.stringify(result.user));
 
       navigate("/dashboard");
-      console.log(result.user);
     }
   };
 
@@ -54,6 +55,7 @@ export const Login = ({ setLoggedInUser, loggedInUser }) => {
       required: true,
     },
   ];
+
   return (
     <div>
       <TopNav />

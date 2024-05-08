@@ -13,7 +13,7 @@ const initialState = {
   confirmPassword: "",
 };
 
-export const Signup = ({ loggedInUser }) => {
+export const Signup = () => {
   const [form, setForm] = useState(initialState);
   const [response, setResponse] = useState({});
 
@@ -81,7 +81,7 @@ export const Signup = ({ loggedInUser }) => {
   return (
     <div>
       {/* header */}
-      <TopNav loggedInUser={loggedInUser} />
+      <TopNav />
 
       {/* main  body*/}
       <Container className="main" fluid>

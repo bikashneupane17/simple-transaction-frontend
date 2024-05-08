@@ -29,7 +29,6 @@ export const postSignup = async (userObj) => {
 export const postLogin = async (loginInfo) => {
   try {
     const { data } = await axios.post(apiLoginEndPoint, loginInfo);
-    console.log(data);
 
     return data;
   } catch (error) {
@@ -72,6 +71,30 @@ export const getTransaction = async () => {
     }
 
     const { data } = await axios.get(apiNewTransaction, {
+      headers: {
+        Authorization: userId,
+      },
+    });
+
+    return data;
+  } catch (error) {
+    return {
+      status: "error",
+      message: error.message,
+    };
+  }
+};
+
+export const deleteTransaction = async (idsToDelete) => {
+  try {
+    const userId = getUserId();
+
+    if (!userId) {
+      throw new Error("User id doen't exist! Login first");
+    }
+
+    const { data } = await axios.delete(apiNewTransaction, {
+      data: idsToDelete,
       headers: {
         Authorization: userId,
       },

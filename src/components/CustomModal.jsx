@@ -1,18 +1,13 @@
 import React from "react";
-import { useState } from "react";
-import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { useUser } from "../Context/UserContext";
 
-export const CustomModal = ({ children, title, show, setShowForm }) => {
-  //   const [show, setShow] = useState(false);
-
-  //   const handleClose = () => setShow(false);
-  //   const handleShow = () => setShow(true);
-
+export const CustomModal = ({ children }) => {
+  const { showForm, setShowForm, title } = useUser();
   return (
     <>
       <Modal
-        show={show}
+        show={showForm}
         onHide={setShowForm}
         backdrop="static"
         keyboard={false}
