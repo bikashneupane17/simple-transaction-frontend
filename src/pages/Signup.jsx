@@ -1,8 +1,9 @@
+import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
 import React, { useState } from "react";
-import { TopNav } from "../components/TopNav";
-import { Footer } from "../components/Footer";
+
 import { CustomInput } from "../components/CustomInput";
-import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
+import { Footer } from "../components/Footer";
+import { TopNav } from "../components/TopNav";
 import { postSignup } from "../axios/axiosHelper";
 
 const initialState = {
@@ -82,10 +83,9 @@ export const Signup = () => {
     <div>
       {/* header */}
       <TopNav />
-
       {/* main  body*/}
-      <Container className="main" fluid>
-        <Row>
+      <Container fluid>
+        <Row className="main">
           <Col
             md={6}
             className="bg-info vh-md-100 p-5 d-flex justify-content-center align-items-center"

@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
+
 import { getTransaction } from "../axios/axiosHelper";
+import { toast } from "react-toastify";
 
 //. create a context
 const UserContext = createContext();
@@ -9,6 +11,10 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [loggedInUser, setLoggedInUser] = useState({});
   const [transactions, setTransactions] = useState([]);
+  const [filteredTrans, setFilteredTrans] = useState([]);
+  const [transType, setTransType] = useState();
+  const [idsToDelete, setIdsToDelete] = useState([]);
+
   const [showForm, setShowForm] = useState(false);
   const title = "Add New Transaction";
 
@@ -19,7 +25,9 @@ export const UserProvider = ({ children }) => {
 
   const getTrans = async () => {
     const { status, message, trans } = await getTransaction();
-    status === "error" ? toast.error(message) : setTransactions(trans);
+    status === "error"
+      ? toast.error(message)
+      : (setTransactions(trans), setFilteredTrans(trans));
   };
 
   return (
@@ -33,6 +41,12 @@ export const UserProvider = ({ children }) => {
         showForm,
         setShowForm,
         title,
+        filteredTrans,
+        setFilteredTrans,
+        transType,
+        setTransType,
+        idsToDelete,
+        setIdsToDelete,
       }}
     >
       {children}
@@ -42,14 +56,3 @@ export const UserProvider = ({ children }) => {
 
 //3. allows any component to consume the data
 export const useUser = () => useContext(UserContext);
-
-//4. Use in main.jsx
-{
-  /* <React.StrictMode>
-<BrowserRouter>
-  <UserProvider>
-    <App />
-  </UserProvider>
-</BrowserRouter>
-</React.StrictMode> */
-}

@@ -1,15 +1,16 @@
-import React from "react";
-import { TopNav } from "../components/TopNav";
-import { Footer } from "../components/Footer";
-import { Container, Button, Row, Col } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
+
 import { AuthComponent } from "../components/AuthComponent";
-import { NewTransactioForm } from "../components/NewTransactioForm";
-import { TransactionTable } from "../components/TransactionTable";
 import { CustomModal } from "../components/CustomModal";
+import { DoughnutChart } from "../components/DoughnutChart";
+import { Footer } from "../components/Footer";
+import { NewTransactioForm } from "../components/NewTransactioForm";
+import { TopNav } from "../components/TopNav";
+import { TransactionTable } from "../components/TransactionTable";
 import { useUser } from "../Context/UserContext";
 
 export const Dashboard = () => {
-  const { loggedInUser, setShowForm } = useUser();
+  const { loggedInUser } = useUser();
 
   return (
     <div>
@@ -23,12 +24,6 @@ export const Dashboard = () => {
           <CustomModal>
             <NewTransactioForm />
           </CustomModal>
-
-          <Row>
-            <Col className="text-end">
-              <Button onClick={() => setShowForm(true)}>Add Transaction</Button>
-            </Col>
-          </Row>
 
           <Row className="mt-2">
             <Col>

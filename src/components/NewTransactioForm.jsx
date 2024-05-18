@@ -1,10 +1,12 @@
-import { Row, Col, Form } from "react-bootstrap";
+import "react-toastify/dist/ReactToastify.css";
+
+import { Col, Form, Row } from "react-bootstrap";
 import { CustomInput, CustomSelect } from "./CustomInput";
+
 import { Button } from "react-bootstrap";
-import { useState } from "react";
 import { postTransaction } from "../axios/axiosHelper";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
 import { useUser } from "../Context/UserContext";
 
 export const NewTransactioForm = () => {
@@ -63,7 +65,10 @@ export const NewTransactioForm = () => {
   };
 
   return (
-    <Form className="p-3 border rounded shadow-lg" onSubmit={handleOnSubmit}>
+    <Form
+      className="m-3 p-5 border rounded shadow-lg"
+      onSubmit={handleOnSubmit}
+    >
       <Row>
         <Col>
           {inputs.map(({ elemType, ...item }, i) =>
@@ -73,7 +78,7 @@ export const NewTransactioForm = () => {
               <CustomInput key={i} {...item} onChange={handleOnChange} />
             )
           )}
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" className="w-100 mt-2">
             Add Transaction
           </Button>
         </Col>
